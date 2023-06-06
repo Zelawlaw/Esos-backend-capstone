@@ -10,13 +10,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,11 +26,11 @@ import lombok.NoArgsConstructor;
  * @author lawrencekarani
  */
 @Entity
-@Table(name = "users")
+@Table(name = "incidents")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Users implements Serializable {
+public class Incident implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,19 +39,23 @@ public class Users implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "userId")
-    private int userId;
+    @Column(name = "incidentID")
+    private String incidentID;
+    @Column(name = "description")
+    private String description;
     @Basic(optional = false)
-    @Column(name = "username")
-    private String username;
-    @Basic(optional = false)
-    @Column(name = "password")
-    private String password;
-    @OneToMany(mappedBy = "users")
-    private Collection<Users> usersCollection;
-    @JoinColumn(name = "managerId", referencedColumnName = "id")
-    @ManyToOne
-    private Users users;
+    @Column(name = "reportedtime")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date reportedtime;
+    @Column(name = "reporter")
+    private String reporter;
+    @Column(name = "incidentowner")
+    private String incidentowner;
+    @Column(name = "status")
+    private String status;
+    @OneToMany(mappedBy = "incidents")
+    private Collection<Log> logsCollection;
 
+   
     
 }

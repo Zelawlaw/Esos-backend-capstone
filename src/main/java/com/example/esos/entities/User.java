@@ -14,10 +14,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Collection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,11 +26,11 @@ import lombok.NoArgsConstructor;
  * @author lawrencekarani
  */
 @Entity
-@Table(name = "logs")
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Logs implements Serializable {
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,15 +38,20 @@ public class Logs implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "update")
-    private String update;
-    @Column(name = "updatetime")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatetime;
-    @Column(name = "updatedby")
-    private String updatedby;
-    @JoinColumn(name = "IncidentId", referencedColumnName = "incidentID")
+    @Basic(optional = false)
+    @Column(name = "userId")
+    private int userId;
+    @Basic(optional = false)
+    @Column(name = "username")
+    private String username;
+    @Basic(optional = false)
+    @Column(name = "password")
+    private String password;
+    @OneToMany(mappedBy = "users")
+    private Collection<User> usersCollection;
+    @JoinColumn(name = "managerId", referencedColumnName = "id")
     @ManyToOne
-    private Incidents incidents;
+    private User users;
 
+    
 }
