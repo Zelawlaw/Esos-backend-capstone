@@ -3,6 +3,7 @@ package com.example.esos.services.impl;
 import com.example.esos.entities.Incident;
 import com.example.esos.entities.Log;
 import com.example.esos.models.requests.IncidentCreate;
+import com.example.esos.models.requests.IncidentUpdate;
 import com.example.esos.models.responses.GenericResponse;
 import com.example.esos.models.responses.IncidentResponse;
 import com.example.esos.repositories.IncidentRepository;
@@ -14,23 +15,27 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
 
+@Transactional
 @SpringBootTest
 class IncidentServiceTest {
 
     @Autowired
     IncidentService incidentService;
 
-    @MockBean
+    @SpyBean
     IncidentRepository incidentRepository;
 
     Incident incident1,incident2;
@@ -77,7 +82,7 @@ class IncidentServiceTest {
      ResponseEntity<GenericResponse> response = this.incidentService.createIncident(incidentCreate);
     assertEquals(HttpStatus.OK,response.getStatusCode());
         GenericResponse genericResponse = response.getBody();
-        assertNotNull(genericResponse); // Make sure the response body is not null
+        assertNotNull(genericResponse);
         String message = genericResponse.getMessage();
         String status = genericResponse.getStatus();
         assertNotNull(message);
@@ -87,7 +92,46 @@ class IncidentServiceTest {
 
     }
 
+    @Test
+    void testIncidentUpdateSuccess() {
+        //when
+
+        //save incident in db
+        //add previous logs to incident
+        Collection<Log> logs = new ArrayList<>();
+        log1.setIncident(incident1);
+        logs.add(log1);
+        log2.setIncident(incident1);
+        logs.add(log2);
+         incident1.setLogsCollection(logs);
+        this.incidentRepository.save(incident1);
+
+        //create IncidentCreate object
+        IncidentUpdate incidentUpdate = new IncidentUpdate("Prescribed medication",incident1.getIncidentID());
+
+       //then
+
+        ResponseEntity<GenericResponse> response = this.incidentService.updateIncident(incidentUpdate);
+        //check if logs increased to 3
+        this.incidentRepository
+                .findUserByIncidentID(incident1.getIncidentID())
+                        .ifPresent(updatedIncident ->{
+                            assertEquals(3,updatedIncident.getLogsCollection().size());
+                        });
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        GenericResponse genericResponse = response.getBody();
+        assertNotNull(genericResponse);
+        String message = genericResponse.getMessage();
+        String status = genericResponse.getStatus();
+        assertNotNull(message);
+        assertNotNull(status);
+        assertEquals("success",message);
+        assertEquals("200",status);
+    }
+
     @AfterEach
     void tearDown() {
+        this.incidentRepository.deleteByIncidentID(incident1.getIncidentID());
+        this.incidentRepository.deleteByIncidentID(incident2.getIncidentID());
     }
 }
