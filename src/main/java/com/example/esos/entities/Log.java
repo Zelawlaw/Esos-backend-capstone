@@ -40,6 +40,9 @@ public class Log implements Serializable {
     private Integer id;
     @Column(name = "incidentupdate")
     private String incidentUpdate;
+//
+//    @Column(name = "incidentid")
+//    private String incidentId;
     @Column(name = "updatetime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatetime;
@@ -48,5 +51,11 @@ public class Log implements Serializable {
     @JoinColumn(name = "incidentid", referencedColumnName = "incidentid")
     @ManyToOne
     private Incident incident;
+
+    public Log( String incidentUpdate,Date updatetime,String updatedby){
+        this.incidentUpdate =  incidentUpdate;
+        this.updatetime = updatetime;
+        this.updatedby =  updatedby;
+    }
 
 }

@@ -4,16 +4,8 @@
  */
 package com.example.esos.entities;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -53,7 +45,7 @@ public class Incident implements Serializable {
     private String incidentowner;
     @Column(name = "status")
     private String status;
-    @OneToMany(mappedBy = "incident")
+    @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL  ,fetch = FetchType.EAGER)
     private Collection<Log> logsCollection;
 
 

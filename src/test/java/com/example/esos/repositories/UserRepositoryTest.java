@@ -19,6 +19,9 @@ class UserRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
+
+
+
     User user1,user2;
 
     @BeforeEach
