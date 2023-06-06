@@ -38,15 +38,15 @@ public class Log implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "update")
-    private String update;
+    @Column(name = "incidentupdate")
+    private String incidentUpdate;
     @Column(name = "updatetime")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatetime;
     @Column(name = "updatedby")
     private String updatedby;
-    @JoinColumn(name = "IncidentId", referencedColumnName = "incidentID")
+    @JoinColumn(name = "incidentid", referencedColumnName = "incidentid")
     @ManyToOne
-    private Incident incidents;
+    private Incident incident;
 
 }

@@ -39,7 +39,7 @@ public class Incident implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "incidentID")
+    @Column(name = "incidentid")
     private String incidentID;
     @Column(name = "description")
     private String description;
@@ -53,7 +53,7 @@ public class Incident implements Serializable {
     private String incidentowner;
     @Column(name = "status")
     private String status;
-    @OneToMany(mappedBy = "incidents")
+    @OneToMany(mappedBy = "incident")
     private Collection<Log> logsCollection;
 
    

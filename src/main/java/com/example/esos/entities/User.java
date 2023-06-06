@@ -39,19 +39,25 @@ public class User implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "userId")
-    private int userId;
+    @Column(name = "userid")
+    private Integer userId;
     @Basic(optional = false)
     @Column(name = "username")
     private String username;
     @Basic(optional = false)
     @Column(name = "password")
     private String password;
-    @OneToMany(mappedBy = "users")
-    private Collection<User> usersCollection;
-    @JoinColumn(name = "managerId", referencedColumnName = "id")
+    @OneToMany(mappedBy = "manager")
+    private Collection<User> directReports;
+    @JoinColumn(name = "managerid", referencedColumnName = "id")
     @ManyToOne
-    private User users;
+    private User manager;
 
-    
+      public User (Integer userId,String username,String password){
+          this.userId = userId;
+          this.username =  username;
+          this.password = password;
+      }
+
+
 }
