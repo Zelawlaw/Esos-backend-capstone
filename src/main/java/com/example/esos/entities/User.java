@@ -18,6 +18,7 @@ import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.Collection;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -30,6 +31,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
