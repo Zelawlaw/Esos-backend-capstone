@@ -56,6 +56,13 @@ public class Incident implements Serializable {
     @OneToMany(mappedBy = "incident")
     private Collection<Log> logsCollection;
 
-   
+
+    public Incident( String incidentID,String  description, Date reportedtime,String reporter){
+        this.incidentID=incidentID;
+        this.description=description;
+        this.reportedtime=reportedtime;
+        this.reporter=reporter;
+
+    }
     
 }
