@@ -26,9 +26,9 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        user1 = new User(1,"sample user 1","password1");
+        user1 = new User(1000,"sample user 1","password1");
         user1.setManager(null);
-        user2 = new User(2,"sample user 2","password2");
+        user2 = new User(2000,"sample user 2","password2");
         user2.setManager(user1);
     }
 
