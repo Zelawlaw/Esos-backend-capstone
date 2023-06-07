@@ -42,13 +42,7 @@ class IncidentRepositoryTest {
         log2.setIncident(incident1);
         logs1.add(log2);
         incident1.setLogsCollection(logs1);
-//        log3 = new Log("at pharmacy",new Date(), "Juliet");
-//        log3.setIncident(incident2);
-//        logs2.add(log3);
-//        log4 = new Log("going home",new Date(), "Juliet");
-//        log4.setIncident(incident2);
-//        logs2.add(log4);
-//        incident2.setLogsCollection(logs2);
+
     }
 
     @Test

@@ -2,11 +2,13 @@ package com.example.esos.services.impl;
 
 import com.example.esos.entities.Incident;
 import com.example.esos.entities.Log;
+import com.example.esos.entities.User;
 import com.example.esos.models.requests.IncidentCreate;
 import com.example.esos.models.requests.IncidentUpdate;
 import com.example.esos.models.responses.GenericResponse;
 import com.example.esos.models.responses.IncidentResponse;
 import com.example.esos.repositories.IncidentRepository;
+import com.example.esos.repositories.UserRepository;
 import com.example.esos.services.IncidentService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import org.junit.jupiter.api.AfterEach;
@@ -20,10 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
@@ -35,19 +34,31 @@ class IncidentServiceTest {
     @Autowired
     IncidentService incidentService;
 
+    @Autowired
+    UserRepository userRepository;
+
     @SpyBean
     IncidentRepository incidentRepository;
 
     Incident incident1,incident2;
-    Log log1,log2;
+    Log log1,log2,log3,log4;
+
+    User user1,user2;
 
     @BeforeEach
     void setUp() {
-
-        incident1 = new Incident("SOS23434","heavy flu", new Date(),"lolo");
-        incident2 = new Incident("SOS23677","severe headache", new Date(),"ngururu");
+        user1 = new User(1000,"sample lolo","password1");
+        user1.setManager(null);
+        user2 = new User(2000,"sample ngururu","password2");
+        user2.setManager(user1);
+        incident1 = new Incident("SOS23434","heavy flu", new Date(),user1.getUsername());
+        incident2 = new Incident("SOS23677","severe headache", new Date(),user2.getUsername());
         log1 = new Log("gone to hospital",new Date(),"James");
         log2 = new Log("seen doctor",new Date(),"James");
+        log3 = new Log("at pharmacy",new Date(), "Juliet");
+        log4 = new Log("going home",new Date(), "Juliet");
+
+
     }
 
     @Test
@@ -129,9 +140,53 @@ class IncidentServiceTest {
         assertEquals("200",status);
     }
 
+
+    @Test
+    void testSuccessfulGetIncidents() {
+ //save users
+     List<User> users = new ArrayList<>();
+     users.add(user1);
+     users.add(user2);
+     this.userRepository.saveAll(users);
+
+  //save incidents
+        Collection<Log> logs = new ArrayList<>();
+        log1.setIncident(incident1);
+        logs.add(log1);
+        log2.setIncident(incident1);
+        logs.add(log2);
+        incident1.setLogsCollection(logs);
+
+        Collection<Log> logs2 = new ArrayList<>();
+        log3.setIncident(incident2);
+        logs2.add(log1);
+        log4.setIncident(incident2);
+        logs2.add(log2);
+        incident2.setLogsCollection(logs2);
+
+        //save both incidents
+        List<Incident> incidents = new ArrayList<>();
+        incidents.add(incident1);
+        incidents.add(incident2);
+        this.incidentRepository.saveAll(incidents);
+
+        ResponseEntity<IncidentResponse> response = this.incidentService.getIncidents(user1.getUsername());
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        IncidentResponse incidentResponse = response.getBody();
+        assertEquals(1,incidentResponse.getPersonalIncidents().size());
+
+
+    }
+
+
     @AfterEach
     void tearDown() {
+        //remove sample incidents
         this.incidentRepository.deleteByIncidentID(incident1.getIncidentID());
         this.incidentRepository.deleteByIncidentID(incident2.getIncidentID());
+
+        //remove sample users
+        this.userRepository.deleteByUserId(user1.getUserId());
+        this.userRepository.deleteByUserId(user2.getUserId());
     }
 }

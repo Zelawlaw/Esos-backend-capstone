@@ -49,8 +49,10 @@ class UserRepositoryTest {
 
 
 
+
     @AfterEach
     void tearDown() {
-      this.userRepository.deleteByUserId(user1.getUserId());
+
+
     }
 }

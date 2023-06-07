@@ -12,7 +12,7 @@ import java.util.List;
 public interface IncidentService {
 
     //get incidents as per role
-    ResponseEntity<IncidentResponse> getIncidents();
+    ResponseEntity<IncidentResponse> getIncidents(String username);
 
     //create incident
 

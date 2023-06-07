@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -26,7 +25,7 @@ public class IncidentServiceImpl implements IncidentService {
    private final IncidentRepository incidentRepository;
 
     @Override
-    public ResponseEntity<IncidentResponse> getIncidents() {
+    public ResponseEntity<IncidentResponse> getIncidents(String username) {
         return null;
     }
 
