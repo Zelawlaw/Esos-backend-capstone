@@ -10,13 +10,11 @@ import com.example.esos.models.responses.IncidentResponse;
 import com.example.esos.repositories.IncidentRepository;
 import com.example.esos.repositories.UserRepository;
 import com.example.esos.services.IncidentService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,9 +46,11 @@ class IncidentServiceTest {
     @BeforeEach
     void setUp() {
         user1 = new User(1000,"sample lolo","password1");
-        user1.setManager(null);
         user2 = new User(2000,"sample ngururu","password2");
-        user2.setManager(user1);
+        user1.setManager(user2);
+        Collection<User> directreport = new ArrayList<>();
+        directreport.add(user1);
+        user2.setDirectReports(directreport);
         incident1 = new Incident("SOS23434","heavy flu", new Date(),user1.getUsername());
         incident2 = new Incident("SOS23677","severe headache", new Date(),user2.getUsername());
         log1 = new Log("gone to hospital",new Date(),"James");
@@ -125,7 +125,7 @@ class IncidentServiceTest {
         ResponseEntity<GenericResponse> response = this.incidentService.updateIncident(incidentUpdate);
         //check if logs increased to 3
         this.incidentRepository
-                .findUserByIncidentID(incident1.getIncidentID())
+                .findByIncidentID(incident1.getIncidentID())
                         .ifPresent(updatedIncident ->{
                             assertEquals(3,updatedIncident.getLogsCollection().size());
                         });
@@ -159,9 +159,9 @@ class IncidentServiceTest {
 
         Collection<Log> logs2 = new ArrayList<>();
         log3.setIncident(incident2);
-        logs2.add(log1);
+        logs2.add(log3);
         log4.setIncident(incident2);
-        logs2.add(log2);
+        logs2.add(log4);
         incident2.setLogsCollection(logs2);
 
         //save both incidents
@@ -170,7 +170,7 @@ class IncidentServiceTest {
         incidents.add(incident2);
         this.incidentRepository.saveAll(incidents);
 
-        ResponseEntity<IncidentResponse> response = this.incidentService.getIncidents(user1.getUsername());
+        ResponseEntity<IncidentResponse> response = this.incidentService.getIncidents(user2.getUsername());
         assertEquals(HttpStatus.OK,response.getStatusCode());
         IncidentResponse incidentResponse = response.getBody();
         assertEquals(1,incidentResponse.getPersonalIncidents().size());
@@ -185,8 +185,8 @@ class IncidentServiceTest {
         this.incidentRepository.deleteByIncidentID(incident1.getIncidentID());
         this.incidentRepository.deleteByIncidentID(incident2.getIncidentID());
 
-        //remove sample users
-        this.userRepository.deleteByUserId(user1.getUserId());
-        this.userRepository.deleteByUserId(user2.getUserId());
+       //remove sample users
+//        this.userRepository.deleteByUserId(user1.getUserId());
+//        this.userRepository.deleteByUserId(user2.getUserId());
     }
 }

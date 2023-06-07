@@ -62,4 +62,16 @@ public class User implements Serializable {
       }
 
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("User{");
+        sb.append("id=").append(id);
+        sb.append(", userId=").append(userId);
+        sb.append(", username='").append(username).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", directReports=").append(directReports);
+        sb.append(", manager=").append(manager.getUsername());
+        sb.append('}');
+        return sb.toString();
+    }
 }

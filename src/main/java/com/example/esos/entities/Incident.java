@@ -58,5 +58,19 @@ public class Incident implements Serializable {
         this.reporter=reporter;
 
     }
-    
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Incident{");
+        sb.append("id=").append(id);
+        sb.append(", incidentID='").append(incidentID).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", reportedtime=").append(reportedtime);
+        sb.append(", reporter='").append(reporter).append('\'');
+        sb.append(", incidentowner='").append(incidentowner).append('\'');
+        sb.append(", status='").append(status).append('\'');
+        sb.append(", logsCollection=").append(logsCollection);
+        sb.append('}');
+        return sb.toString();
+    }
 }

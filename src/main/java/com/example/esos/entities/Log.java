@@ -60,4 +60,14 @@ public class Log implements Serializable {
         this.updatedby =  updatedby;
     }
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Log{");
+        sb.append("id=").append(id);
+        sb.append(", incidentUpdate='").append(incidentUpdate).append('\'');
+        sb.append(", updatetime=").append(updatetime);
+        sb.append(", updatedby='").append(updatedby).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

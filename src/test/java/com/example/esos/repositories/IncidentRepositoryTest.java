@@ -2,7 +2,6 @@ package com.example.esos.repositories;
 
 import com.example.esos.entities.Incident;
 import com.example.esos.entities.Log;
-import com.example.esos.entities.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,7 +47,7 @@ class IncidentRepositoryTest {
     @Test
     void testSuccessfulSaving(){
         this.incidentRepository.save(incident1);
-        Optional<Incident> fetchedUser = this.incidentRepository.findUserByIncidentID(incident1.getIncidentID());
+        Optional<Incident> fetchedUser = this.incidentRepository.findByIncidentID(incident1.getIncidentID());
         assertEquals(incident1.getIncidentID(),fetchedUser.orElse(null).getIncidentID());
     }
 
@@ -57,7 +56,7 @@ class IncidentRepositoryTest {
     void testSuccessfulSavingWithLogs(){
 
         this.incidentRepository.save(incident1);
-        Optional<Incident> fetchedIncident = this.incidentRepository.findUserByIncidentID(incident1.getIncidentID());
+        Optional<Incident> fetchedIncident = this.incidentRepository.findByIncidentID(incident1.getIncidentID());
         assertEquals(2,fetchedIncident.orElse(null).getLogsCollection().size());
     }
 
