@@ -7,8 +7,14 @@ import com.example.esos.services.IncidentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -26,7 +32,17 @@ private final IncidentService incidentService;
 
 
     @PostMapping("/v1/createincident")
-    public ResponseEntity createIncident(@Valid @RequestBody IncidentCreate incidentCreate){
+    public ResponseEntity createIncident(@Valid @RequestBody IncidentCreate incidentCreate , BindingResult bindingResult){
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getAllErrors().forEach(error -> {
+                String fieldName = ((FieldError) error).getField();
+                String errorMessage = error.getDefaultMessage();
+                errors.put(fieldName, errorMessage);
+            });
+            return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        }
         log.info("incident to create {}",incidentCreate.toString());
         return this.incidentService.createIncident(incidentCreate);
     }
@@ -36,6 +52,9 @@ private final IncidentService incidentService;
         log.info("incident to create {}",incidentUpdate.toString());
         return this.incidentService.updateIncident(incidentUpdate);
     }
+
+
+
 
 
 }
