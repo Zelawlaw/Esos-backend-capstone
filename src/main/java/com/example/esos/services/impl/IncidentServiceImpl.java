@@ -29,6 +29,10 @@ public class IncidentServiceImpl implements IncidentService {
     @Override
     public ResponseEntity<IncidentResponse> getIncidents(String username) {
         try {
+
+
+            List<Incident> directReportsIncidents = new ArrayList<>();
+
             // Create an empty incident response
             IncidentResponse incidentResponse = new IncidentResponse();
 
@@ -39,18 +43,22 @@ public class IncidentServiceImpl implements IncidentService {
                 // Find all personal incidents
                 incidentResponse.setPersonalIncidents(this.incidentRepository.findByReporter(user.getUsername()).orElse(Collections.emptyList()));
 
-                // Find all direct reports incidents
-                List<Incident> directReportsIncidents = new ArrayList<>();
-
                 if (user.getDirectReports() != null) {
                     for (User directReport : user.getDirectReports()) {
                         this.incidentRepository.findByReporter(directReport.getUsername())
                                 .ifPresent(directReportsIncidents::addAll);
                     }
                 }
-                // Assign direct report incidents to the response object
-                incidentResponse.setReporteeIncidents(directReportsIncidents);
             });
+
+            // Add an empty ArrayList if the user is absent
+            if (!fetchedUser.isPresent()) {
+                incidentResponse.setPersonalIncidents(Collections.emptyList());
+            }
+            incidentResponse.setReporteeIncidents(directReportsIncidents);
+
+            //add im incidents later
+
 
             return ResponseEntity.ok(incidentResponse);
         } catch (Exception ex) {
