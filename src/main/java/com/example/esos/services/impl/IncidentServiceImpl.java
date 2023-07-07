@@ -11,6 +11,7 @@ import com.example.esos.repositories.IncidentRepository;
 import com.example.esos.repositories.UserRepository;
 import com.example.esos.services.IncidentService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class IncidentServiceImpl implements IncidentService {
@@ -35,12 +37,13 @@ public class IncidentServiceImpl implements IncidentService {
 
             // Create an empty incident response
             IncidentResponse incidentResponse = new IncidentResponse();
-
             // Fetch user from username
             Optional<User> fetchedUser = this.userRepository.findUserByUsername(username);
+
             fetchedUser.ifPresent(user -> {
                 // User is present
                 // Find all personal incidents
+                log.info("2");
                 incidentResponse.setPersonalIncidents(this.incidentRepository.findByReporter(user.getUsername()).orElse(Collections.emptyList()));
 
                 if (user.getDirectReports() != null) {
@@ -58,7 +61,6 @@ public class IncidentServiceImpl implements IncidentService {
             incidentResponse.setReporteeIncidents(directReportsIncidents);
 
             //add im incidents later
-
 
             return ResponseEntity.ok(incidentResponse);
         } catch (Exception ex) {

@@ -4,6 +4,7 @@
  */
 package com.example.esos.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,6 +51,8 @@ public class Log implements Serializable {
     private Date updatetime;
     @Column(name = "updatedby")
     private String updatedby;
+
+    @JsonIgnore
     @JoinColumn(name = "incidentid", referencedColumnName = "incidentid")
     @ManyToOne
     private Incident incident;

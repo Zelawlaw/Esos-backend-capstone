@@ -69,7 +69,7 @@ public class Incident implements Serializable {
         sb.append(", reporter='").append(reporter).append('\'');
         sb.append(", incidentowner='").append(incidentowner).append('\'');
         sb.append(", status='").append(status).append('\'');
-        sb.append(", logsCollection=").append(logsCollection);
+      //  sb.append(", logsCollection size=").append(logsCollection.size());
         sb.append('}');
         return sb.toString();
     }
