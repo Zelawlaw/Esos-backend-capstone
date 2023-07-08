@@ -4,16 +4,8 @@
  */
 package com.example.esos.entities;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -53,7 +45,11 @@ public class User implements Serializable {
     private Collection<User> directReports;
     @JoinColumn(name = "managerid", referencedColumnName = "id")
     @ManyToOne
+    @JsonIgnore
     private User manager;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserPermissions userPermissions;
 
       public User (Integer userId,String username,String password){
           this.userId = userId;
