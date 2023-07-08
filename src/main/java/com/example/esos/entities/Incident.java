@@ -4,6 +4,7 @@
  */
 package com.example.esos.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -47,6 +48,8 @@ public class Incident implements Serializable {
     private String incidentowner;
     @Column(name = "status")
     private String status;
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL  ,fetch = FetchType.EAGER)
     private Collection<Log> logsCollection;
 
