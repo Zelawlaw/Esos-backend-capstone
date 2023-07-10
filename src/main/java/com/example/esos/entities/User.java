@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  *
@@ -58,6 +59,12 @@ public class User implements Serializable {
           this.username =  username;
           this.password = password;
       }
+
+    public User(Integer userId, String username, String password, PasswordEncoder passwordEncoder) {
+        this.userId = userId;
+        this.username = username;
+        this.password = passwordEncoder.encode(password);
+    }
 
     @Override
     public String toString() {
