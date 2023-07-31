@@ -107,6 +107,8 @@ public class IncidentServiceImpl implements IncidentService {
     @Override
     public ResponseEntity<GenericResponse> updateIncident(IncidentUpdate incidentRequest) {
         AtomicReference<ResponseEntity<GenericResponse>> response = new AtomicReference<>();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
 
         this.incidentRepository.findByIncidentID(incidentRequest.getIncidentId())
                 .ifPresentOrElse(incident -> {
@@ -115,6 +117,8 @@ public class IncidentServiceImpl implements IncidentService {
                         Log newLog = Log.builder()
                                 .incidentUpdate(incidentRequest.getUpdate())
                                 .incident(incident)
+                                .updatedby(username)
+                                .updatetime(new Date())
                                 .build();
 
                         // Update logs
