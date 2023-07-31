@@ -1,4 +1,3 @@
-
 package com.example.esos.validation;
 
 import com.example.esos.models.Role;
@@ -15,9 +14,9 @@ public class RoleValidator implements ConstraintValidator<ValidRole, String> {
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
 
-       log.info("role value :"+value);
+        log.info("role value :" + value);
         Arrays.stream(Role.values())
-                .forEach(role -> log.info("role in enum "+role));
+                .forEach(role -> log.info("role in enum " + role));
         return Arrays.stream(Role.values())
                 .anyMatch(role -> role.name().equals(value));
     }

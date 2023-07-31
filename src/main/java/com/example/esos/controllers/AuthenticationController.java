@@ -39,15 +39,15 @@ public class AuthenticationController {
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
             );
 
-            log.info("userDetails :"+authentication.getName()+ " is authenticated :"+authentication.isAuthenticated());
+            log.info("userDetails :" + authentication.getName() + " is authenticated :" + authentication.isAuthenticated());
             UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
             String token = jwtTokenProvider.createToken(userDetails);
             long expiryInMinutes = jwtTokenProvider.getExpiryInMinutes();
 
-            AuthenticationResponse response = new AuthenticationResponse(token, expiryInMinutes+" Minutes");
+            AuthenticationResponse response = new AuthenticationResponse(token, expiryInMinutes + " Minutes");
             return ResponseEntity.ok(response);
         } catch (BadCredentialsException ex) {
-            log.error(ex.getMessage(),ex);
+            log.error(ex.getMessage(), ex);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
     }

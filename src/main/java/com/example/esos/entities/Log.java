@@ -17,15 +17,16 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+
 import java.io.Serializable;
 import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *
  * @author lawrencekarani
  */
 @Entity
@@ -44,7 +45,7 @@ public class Log implements Serializable {
     private Integer id;
     @Column(name = "incidentupdate")
     private String incidentUpdate;
-//
+    //
 //    @Column(name = "incidentid")
 //    private String incidentId;
     @Column(name = "updatetime")
@@ -53,16 +54,16 @@ public class Log implements Serializable {
     @Column(name = "updatedby")
     private String updatedby;
 
-   // @JsonIgnore
+    // @JsonIgnore
     @JsonBackReference
     @JoinColumn(name = "incidentid", referencedColumnName = "incidentid")
     @ManyToOne
     private Incident incident;
 
-    public Log( String incidentUpdate,Date updatetime,String updatedby){
-        this.incidentUpdate =  incidentUpdate;
+    public Log(String incidentUpdate, Date updatetime, String updatedby) {
+        this.incidentUpdate = incidentUpdate;
         this.updatetime = updatetime;
-        this.updatedby =  updatedby;
+        this.updatedby = updatedby;
     }
 
     @Override

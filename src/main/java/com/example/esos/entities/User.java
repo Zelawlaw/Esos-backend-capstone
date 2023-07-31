@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Collection;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- *
  * @author lawrencekarani
  */
 @Entity
@@ -36,7 +36,7 @@ public class User implements Serializable {
     private Integer id;
 
     @Basic(optional = false)
-    @Column(name = "username" , unique = true) //making username unique
+    @Column(name = "username", unique = true) //making username unique
     private String username;
     @Basic(optional = false)
     @Column(name = "password")
@@ -52,11 +52,11 @@ public class User implements Serializable {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserPermission userPermission;
 
-      public User (String username,String password){
+    public User(String username, String password) {
 
-          this.username =  username;
-          this.password = password;
-      }
+        this.username = username;
+        this.password = password;
+    }
 
     public User(String username, String password, PasswordEncoder passwordEncoder) {
 

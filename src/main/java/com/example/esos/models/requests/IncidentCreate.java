@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class IncidentCreate {
 
-    @NotEmpty( message = "Message should not be empty")
+    @NotEmpty(message = "Message should not be empty")
     @NotNull(message = "Message should not be null")
     private String message;
 

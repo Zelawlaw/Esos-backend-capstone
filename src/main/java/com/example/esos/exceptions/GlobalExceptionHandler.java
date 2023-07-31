@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> handleUserNotFoundException(UserNotFoundException ex) {
         Map<String, String> errors = new HashMap<>();
-        errors.put("error",ex.getMessage());
+        errors.put("error", ex.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(JwtException.class)
     public ResponseEntity<Object> expiredTokenException(JwtException ex) {
         Map<String, String> errors = new HashMap<>();
-        errors.put("error",ex.getMessage());
+        errors.put("error", ex.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.FORBIDDEN);
     }
 
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> allOtherExceptions(Exception ex) {
         Map<String, String> errors = new HashMap<>();
-        errors.put("error",ex.getMessage());
+        errors.put("error", ex.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

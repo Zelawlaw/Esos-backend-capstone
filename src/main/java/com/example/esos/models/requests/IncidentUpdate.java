@@ -11,11 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class IncidentUpdate {
 
-    @NotEmpty( message = "update should not be empty")
+    @NotEmpty(message = "update should not be empty")
     @NotNull(message = "update should not be null")
     String update;
 
-    @NotEmpty( message = "incidentId should not be empty")
+    @NotEmpty(message = "incidentId should not be empty")
     @NotNull(message = "incidentId should not be null")
     String incidentId;
 }

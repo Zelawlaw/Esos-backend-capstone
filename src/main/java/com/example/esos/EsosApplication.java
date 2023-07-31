@@ -19,14 +19,15 @@ import java.util.Optional;
 public class EsosApplication {
 
 
-	@Autowired
-	IncidentRepository incidentRepository;
+    @Autowired
+    IncidentRepository incidentRepository;
 
-	@Autowired
-	LogRepository logRepository;
-	public static void main(String[] args) {
-		SpringApplication.run(EsosApplication.class, args);
-	}
+    @Autowired
+    LogRepository logRepository;
+
+    public static void main(String[] args) {
+        SpringApplication.run(EsosApplication.class, args);
+    }
 
 
 }

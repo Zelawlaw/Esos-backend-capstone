@@ -17,7 +17,7 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private static final String SECRET = "yourSecretKey";
-    private static final long  EXPIRATION_TIME = 60 * 60 * 1000; // 1 hour in milliseconds
+    private static final long EXPIRATION_TIME = 60 * 60 * 1000; // 1 hour in milliseconds
 
 
     private final UserDetailsService userDetailsService;
@@ -44,26 +44,27 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public  String extractUsername(String token) {
+    public String extractUsername(String token) {
         return extractClaims(token).getSubject();
     }
 
-    public  boolean validateToken(String token, UserDetails userDetails) {
+    public boolean validateToken(String token, UserDetails userDetails) {
         String username = extractUsername(token);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
-    private  Claims extractClaims(String token) {
+    private Claims extractClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET)
                 .parseClaimsJws(token)
                 .getBody();
     }
 
-    private  boolean isTokenExpired(String token) {
+    private boolean isTokenExpired(String token) {
         Date expirationDate = extractClaims(token).getExpiration();
         return expirationDate.before(new Date());
     }
+
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
 

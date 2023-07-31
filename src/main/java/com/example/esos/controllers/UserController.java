@@ -18,16 +18,16 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/v1/createuser")
-    public ResponseEntity createUser (@Valid @RequestBody SignupRequest newuser) {
+    public ResponseEntity createUser(@Valid @RequestBody SignupRequest newuser) {
         try {
-           return this.userService.createUser(newuser);
+            return this.userService.createUser(newuser);
         } catch (BadCredentialsException ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
     }
 
     @GetMapping("/v1/getusers")
-    public ResponseEntity getUsers (){
+    public ResponseEntity getUsers() {
         return this.userService.getUsers();
     }
 }

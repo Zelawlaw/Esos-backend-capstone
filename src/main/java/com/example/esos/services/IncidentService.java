@@ -16,12 +16,11 @@ public interface IncidentService {
 
     //create incident
 
-    ResponseEntity<GenericResponse> createIncident (IncidentCreate incidentCreate);
+    ResponseEntity<GenericResponse> createIncident(IncidentCreate incidentCreate);
 
     //update incident
 
-    ResponseEntity<GenericResponse>  updateIncident( IncidentUpdate incidentRequest);
-
+    ResponseEntity<GenericResponse> updateIncident(IncidentUpdate incidentRequest);
 
 
 }

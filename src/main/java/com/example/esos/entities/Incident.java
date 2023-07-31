@@ -10,13 +10,13 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- *
  * @author lawrencekarani
  */
 @Entity
@@ -34,7 +34,7 @@ public class Incident implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "incidentid" , unique = true)
+    @Column(name = "incidentid", unique = true)
     private String incidentID;
     @Column(name = "description")
     private String description;
@@ -50,15 +50,15 @@ public class Incident implements Serializable {
     private String status;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL  ,fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Collection<Log> logsCollection;
 
 
-    public Incident( String incidentID,String  description, Date reportedtime,String reporter){
-        this.incidentID=incidentID;
-        this.description=description;
-        this.reportedtime=reportedtime;
-        this.reporter=reporter;
+    public Incident(String incidentID, String description, Date reportedtime, String reporter) {
+        this.incidentID = incidentID;
+        this.description = description;
+        this.reportedtime = reportedtime;
+        this.reporter = reporter;
 
     }
 
@@ -72,7 +72,7 @@ public class Incident implements Serializable {
         sb.append(", reporter='").append(reporter).append('\'');
         sb.append(", incidentowner='").append(incidentowner).append('\'');
         sb.append(", status='").append(status).append('\'');
-      //  sb.append(", logsCollection size=").append(logsCollection.size());
+        //  sb.append(", logsCollection size=").append(logsCollection.size());
         sb.append('}');
         return sb.toString();
     }

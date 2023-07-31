@@ -39,32 +39,32 @@ class IncidentServiceTest {
     @SpyBean
     IncidentRepository incidentRepository;
 
-    Incident incident1,incident2;
-    Log log1,log2,log3,log4;
+    Incident incident1, incident2;
+    Log log1, log2, log3, log4;
 
-    User user1,user2;
+    User user1, user2;
 
     @BeforeEach
     void setUp() {
-        user1 = new User("sample lolo","password1");
-        user2 = new User("sample ngururu","password2");
+        user1 = new User("sample lolo", "password1");
+        user2 = new User("sample ngururu", "password2");
         user1.setManager(user2);
         Collection<User> directreport = new ArrayList<>();
         directreport.add(user1);
         user2.setDirectReports(directreport);
-        incident1 = new Incident("SOS23434","heavy flu", new Date(),user1.getUsername());
-        incident2 = new Incident("SOS23677","severe headache", new Date(),user2.getUsername());
-        log1 = new Log("gone to hospital",new Date(),"James");
-        log2 = new Log("seen doctor",new Date(),"James");
-        log3 = new Log("at pharmacy",new Date(), "Juliet");
-        log4 = new Log("going home",new Date(), "Juliet");
+        incident1 = new Incident("SOS23434", "heavy flu", new Date(), user1.getUsername());
+        incident2 = new Incident("SOS23677", "severe headache", new Date(), user2.getUsername());
+        log1 = new Log("gone to hospital", new Date(), "James");
+        log2 = new Log("seen doctor", new Date(), "James");
+        log3 = new Log("at pharmacy", new Date(), "Juliet");
+        log4 = new Log("going home", new Date(), "Juliet");
 
 
     }
 
     @Test
-    @WithMockUser(username="testuser", roles={"USER"})
-    void testIncidentCreateSuccess(){
+    @WithMockUser(username = "testuser", roles = {"USER"})
+    void testIncidentCreateSuccess() {
 
         //create IncidentCreate object
         IncidentCreate incidentCreate = new IncidentCreate("I am having a heavy flu. cannot leave home.");
@@ -76,37 +76,37 @@ class IncidentServiceTest {
         log2.setIncident(incident1);
         logs.add(log2);
 
-      Incident mockSavedIncident1 = Incident.builder()
-              .id(2345)
-              .incidentID(incident1.getIncidentID())
-              .description(incident1.getDescription())
-              .incidentowner(incident1.getIncidentowner())
-             // .logsCollection(logs)
-              .reportedtime(incident1.getReportedtime())
-              .reporter(incident1.getReporter())
-              .status("active")
-              .build();
+        Incident mockSavedIncident1 = Incident.builder()
+                .id(2345)
+                .incidentID(incident1.getIncidentID())
+                .description(incident1.getDescription())
+                .incidentowner(incident1.getIncidentowner())
+                // .logsCollection(logs)
+                .reportedtime(incident1.getReportedtime())
+                .reporter(incident1.getReporter())
+                .status("active")
+                .build();
 
-    //when
-     doReturn(mockSavedIncident1).when(incidentRepository).save(incident1);
+        //when
+        doReturn(mockSavedIncident1).when(incidentRepository).save(incident1);
 
-    //then
+        //then
 
-     ResponseEntity<GenericResponse> response = this.incidentService.createIncident(incidentCreate);
-    assertEquals(HttpStatus.OK,response.getStatusCode());
+        ResponseEntity<GenericResponse> response = this.incidentService.createIncident(incidentCreate);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         GenericResponse genericResponse = response.getBody();
         assertNotNull(genericResponse);
         String message = genericResponse.getMessage();
         String status = genericResponse.getStatus();
         assertNotNull(message);
         assertNotNull(status);
-        assertEquals("success",message);
-        assertEquals("200",status);
+        assertEquals("success", message);
+        assertEquals("200", status);
 
     }
 
     @Test
-    @WithMockUser(username="testuser", roles={"USER"})
+    @WithMockUser(username = "testuser", roles = {"USER"})
     void testIncidentUpdateSuccess() {
         //when
 
@@ -117,42 +117,42 @@ class IncidentServiceTest {
         logs.add(log1);
         log2.setIncident(incident1);
         logs.add(log2);
-         incident1.setLogsCollection(logs);
+        incident1.setLogsCollection(logs);
         this.incidentRepository.save(incident1);
 
         //create IncidentCreate object
-        IncidentUpdate incidentUpdate = new IncidentUpdate("Prescribed medication",incident1.getIncidentID());
+        IncidentUpdate incidentUpdate = new IncidentUpdate("Prescribed medication", incident1.getIncidentID());
 
-       //then
+        //then
 
         ResponseEntity<GenericResponse> response = this.incidentService.updateIncident(incidentUpdate);
         //check if logs increased to 3
         this.incidentRepository
                 .findByIncidentID(incident1.getIncidentID())
-                        .ifPresent(updatedIncident ->{
-                            assertEquals(3,updatedIncident.getLogsCollection().size());
-                        });
-        assertEquals(HttpStatus.OK,response.getStatusCode());
+                .ifPresent(updatedIncident -> {
+                    assertEquals(3, updatedIncident.getLogsCollection().size());
+                });
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         GenericResponse genericResponse = response.getBody();
         assertNotNull(genericResponse);
         String message = genericResponse.getMessage();
         String status = genericResponse.getStatus();
         assertNotNull(message);
         assertNotNull(status);
-        assertEquals("success",message);
-        assertEquals("200",status);
+        assertEquals("success", message);
+        assertEquals("200", status);
     }
 
 
     @Test
     void testSuccessfulGetIncidents() {
- //save users
-     List<User> users = new ArrayList<>();
-     users.add(user1);
-     users.add(user2);
-     this.userRepository.saveAll(users);
+        //save users
+        List<User> users = new ArrayList<>();
+        users.add(user1);
+        users.add(user2);
+        this.userRepository.saveAll(users);
 
-  //save incidents
+        //save incidents
         Collection<Log> logs = new ArrayList<>();
         log1.setIncident(incident1);
         logs.add(log1);
@@ -174,9 +174,9 @@ class IncidentServiceTest {
         this.incidentRepository.saveAll(incidents);
 
         ResponseEntity<IncidentResponse> response = this.incidentService.getIncidents(user2.getUsername());
-        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
         IncidentResponse incidentResponse = response.getBody();
-        assertEquals(1,incidentResponse.getPersonalIncidents().size());
+        assertEquals(1, incidentResponse.getPersonalIncidents().size());
 
 
     }
@@ -188,7 +188,7 @@ class IncidentServiceTest {
         this.incidentRepository.deleteByIncidentID(incident1.getIncidentID());
         this.incidentRepository.deleteByIncidentID(incident2.getIncidentID());
 
-       //remove sample users
+        //remove sample users
 //        this.userRepository.deleteByUserId(user1.getUserId());
 //        this.userRepository.deleteByUserId(user2.getUserId());
     }

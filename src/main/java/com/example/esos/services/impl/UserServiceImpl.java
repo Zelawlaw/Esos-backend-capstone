@@ -38,17 +38,15 @@ public class UserServiceImpl implements UserService {
 
         try {
             User newuser;
-            if (signupRequest.getManagerId()!= null)
-            {
+            if (signupRequest.getManagerId() != null) {
                 User manager = this.userRepository.findUserById(signupRequest.getManagerId())
-                                 .orElseThrow(()-> new UserNotFoundException("User with Id:"+signupRequest.getManagerId()+" not found"));
-                newuser = new User( signupRequest.getUsername(), signupRequest.getPassword(),manager, passwordEncoder);
-            }
-            else {
-                newuser = new User( signupRequest.getUsername(), signupRequest.getPassword(), passwordEncoder);
+                        .orElseThrow(() -> new UserNotFoundException("User with Id:" + signupRequest.getManagerId() + " not found"));
+                newuser = new User(signupRequest.getUsername(), signupRequest.getPassword(), manager, passwordEncoder);
+            } else {
+                newuser = new User(signupRequest.getUsername(), signupRequest.getPassword(), passwordEncoder);
             }
 
-            UserPermission userperm = new UserPermission(Role.valueOf(signupRequest.getRole()),newuser);
+            UserPermission userperm = new UserPermission(Role.valueOf(signupRequest.getRole()), newuser);
             newuser.setUserPermission(userperm);
 
             this.userRepository.save(newuser);
@@ -71,11 +69,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity getUsers() {
 
-      List<UserResponse> allUsers =   this.userRepository.findAll().stream().map(
-               user -> this.userMapper.userToUserResponse(user)
-      ).collect(Collectors.toList());
+        List<UserResponse> allUsers = this.userRepository.findAll().stream().map(
+                user -> this.userMapper.userToUserResponse(user)
+        ).collect(Collectors.toList());
 
 
-      return ResponseEntity.ok(allUsers);
+        return ResponseEntity.ok(allUsers);
     }
 }

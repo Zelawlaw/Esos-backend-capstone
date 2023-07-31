@@ -69,15 +69,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authenticationProvider(daoAuthenticationProvider());
 
-        http.csrf(csrf-> csrf.disable())
+        http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/v1/authenticate").permitAll()
-                           //     .requestMatchers("/api/v1/createuser").permitAll()
+                                //     .requestMatchers("/api/v1/createuser").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(filterChainExceptionHandler, UsernamePasswordAuthenticationFilter.class);
-
 
 
         return http.build();

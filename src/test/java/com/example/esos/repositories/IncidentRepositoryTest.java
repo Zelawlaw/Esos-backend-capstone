@@ -25,19 +25,20 @@ class IncidentRepositoryTest {
 
     @Autowired
     LogRepository logRepository;
-    Incident incident1,incident2;
-    Log log1,log2,log3,log4;
+    Incident incident1, incident2;
+    Log log1, log2, log3, log4;
+
     @BeforeEach
     void setUp() {
         Collection<Log> logs1 = new ArrayList<>();
         Collection<Log> logs2 = new ArrayList<>();
 
-        incident1 = new Incident("SOS23434","heavy flu", new Date(),"lolo");
-        incident2 = new Incident("SOS23677","severe headache", new Date(),"ngururu");
-        log1 = new Log("gone to hospital",new Date(),"James");
+        incident1 = new Incident("SOS23434", "heavy flu", new Date(), "lolo");
+        incident2 = new Incident("SOS23677", "severe headache", new Date(), "ngururu");
+        log1 = new Log("gone to hospital", new Date(), "James");
         log1.setIncident(incident1);
         logs1.add(log1);
-        log2 = new Log("seen doctor",new Date(),"James");
+        log2 = new Log("seen doctor", new Date(), "James");
         log2.setIncident(incident1);
         logs1.add(log2);
         incident1.setLogsCollection(logs1);
@@ -45,24 +46,24 @@ class IncidentRepositoryTest {
     }
 
     @Test
-    void testSuccessfulSaving(){
+    void testSuccessfulSaving() {
         this.incidentRepository.save(incident1);
         Optional<Incident> fetchedUser = this.incidentRepository.findByIncidentID(incident1.getIncidentID());
-        assertEquals(incident1.getIncidentID(),fetchedUser.orElse(null).getIncidentID());
+        assertEquals(incident1.getIncidentID(), fetchedUser.orElse(null).getIncidentID());
     }
 
 
     @Test
-    void testSuccessfulSavingWithLogs(){
+    void testSuccessfulSavingWithLogs() {
 
         this.incidentRepository.save(incident1);
         Optional<Incident> fetchedIncident = this.incidentRepository.findByIncidentID(incident1.getIncidentID());
-        assertEquals(2,fetchedIncident.orElse(null).getLogsCollection().size());
+        assertEquals(2, fetchedIncident.orElse(null).getLogsCollection().size());
     }
 
     @AfterEach
     void tearDown() {
-       this.incidentRepository.deleteByIncidentID(incident1.getIncidentID());
+        this.incidentRepository.deleteByIncidentID(incident1.getIncidentID());
     }
 
 }

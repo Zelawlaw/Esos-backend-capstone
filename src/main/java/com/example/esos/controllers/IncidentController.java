@@ -24,19 +24,19 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class IncidentController {
 
-private final IncidentService incidentService;
+    private final IncidentService incidentService;
 
     @GetMapping("/v1/getincidents")
-    public ResponseEntity getIncidents(){
+    public ResponseEntity getIncidents() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        log.info("username {}",username);
+        log.info("username {}", username);
         return this.incidentService.getIncidents(username);
     }
 
 
     @PostMapping("/v1/createincident")
-    public ResponseEntity createIncident(@Valid @RequestBody IncidentCreate incidentCreate , BindingResult bindingResult){
+    public ResponseEntity createIncident(@Valid @RequestBody IncidentCreate incidentCreate, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
@@ -47,18 +47,15 @@ private final IncidentService incidentService;
             });
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         }
-        log.info("incident to create {}",incidentCreate.toString());
+        log.info("incident to create {}", incidentCreate.toString());
         return this.incidentService.createIncident(incidentCreate);
     }
 
     @PostMapping("/v1/updateincident")
-    public ResponseEntity updateIncident(@Valid @RequestBody IncidentUpdate incidentUpdate){
-        log.info("incident to create {}",incidentUpdate.toString());
+    public ResponseEntity updateIncident(@Valid @RequestBody IncidentUpdate incidentUpdate) {
+        log.info("incident to create {}", incidentUpdate.toString());
         return this.incidentService.updateIncident(incidentUpdate);
     }
-
-
-
 
 
 }
