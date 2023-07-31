@@ -13,4 +13,5 @@ public interface UserService {
 
     ResponseEntity<GenericResponse>  createUser(SignupRequest signupRequest);
 
+    ResponseEntity getUsers();
 }

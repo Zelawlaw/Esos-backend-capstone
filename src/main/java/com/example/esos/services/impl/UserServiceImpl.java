@@ -2,9 +2,11 @@ package com.example.esos.services.impl;
 
 
 import com.example.esos.dto.SignupRequest;
+import com.example.esos.dto.UserResponse;
 import com.example.esos.entities.User;
 import com.example.esos.entities.UserPermission;
 import com.example.esos.exceptions.UserNotFoundException;
+import com.example.esos.mappers.UserMapper;
 import com.example.esos.models.Role;
 import com.example.esos.models.responses.GenericResponse;
 import com.example.esos.repositories.UserPermissionRepository;
@@ -16,6 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -23,6 +28,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserPermissionRepository userPermissionRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final UserMapper userMapper;
 
     @Override
     public ResponseEntity<GenericResponse> createUser(SignupRequest signupRequest) {
@@ -56,5 +63,16 @@ public class UserServiceImpl implements UserService {
         }
 
 
+    }
+
+    @Override
+    public ResponseEntity getUsers() {
+
+      List<UserResponse> allUsers =   this.userRepository.findAll().stream().map(
+               user -> this.userMapper.userToUserResponse(user)
+      ).collect(Collectors.toList());
+
+
+      return ResponseEntity.ok(allUsers);
     }
 }

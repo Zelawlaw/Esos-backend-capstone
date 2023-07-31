@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -62,6 +63,7 @@ class IncidentServiceTest {
     }
 
     @Test
+    @WithMockUser(username="testuser", roles={"USER"})
     void testIncidentCreateSuccess(){
 
         //create IncidentCreate object
@@ -104,6 +106,7 @@ class IncidentServiceTest {
     }
 
     @Test
+    @WithMockUser(username="testuser", roles={"USER"})
     void testIncidentUpdateSuccess() {
         //when
 
