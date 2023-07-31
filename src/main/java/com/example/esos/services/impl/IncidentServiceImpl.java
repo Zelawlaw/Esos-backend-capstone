@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,7 +32,7 @@ public class IncidentServiceImpl implements IncidentService {
     private final IncidentRepository incidentRepository;
     private final UserRepository userRepository;
 
-
+    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
     @Override
     public ResponseEntity<IncidentResponse> getIncidents(String username) {
         try {
@@ -73,7 +74,7 @@ public class IncidentServiceImpl implements IncidentService {
         }
     }
 
-
+    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
     @Override
     public ResponseEntity<GenericResponse> createIncident(IncidentCreate incidentCreate) {
 
@@ -104,6 +105,7 @@ public class IncidentServiceImpl implements IncidentService {
 
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
     @Override
     public ResponseEntity<GenericResponse> updateIncident(IncidentUpdate incidentRequest) {
         AtomicReference<ResponseEntity<GenericResponse>> response = new AtomicReference<>();

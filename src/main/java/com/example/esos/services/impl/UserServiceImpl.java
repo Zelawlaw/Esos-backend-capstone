@@ -15,6 +15,7 @@ import com.example.esos.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @Override
     public ResponseEntity<GenericResponse> createUser(SignupRequest signupRequest) {
 
@@ -65,6 +67,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
     @Override
     public ResponseEntity getUsers() {
 
