@@ -1,5 +1,6 @@
 package com.example.esos.config;
 
+import com.example.esos.exceptions.FilterChainExceptionHandler;
 import com.example.esos.services.impl.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,7 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final FilterChainExceptionHandler filterChainExceptionHandler;
 
     @Bean
     public AuthenticationProvider daoAuthenticationProvider() {
@@ -72,7 +74,9 @@ public class SecurityConfig {
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(filterChainExceptionHandler, UsernamePasswordAuthenticationFilter.class);
+
+
 
         return http.build();
     }

@@ -1,5 +1,8 @@
 package com.example.esos.exceptions;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -33,4 +36,22 @@ public class GlobalExceptionHandler {
         errors.put("error",ex.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    //handle all Jwt Related exceptions
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<Object> expiredTokenException(JwtException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error",ex.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.FORBIDDEN);
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> allOtherExceptions(JwtException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("error",ex.getMessage());
+        return new ResponseEntity<>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
