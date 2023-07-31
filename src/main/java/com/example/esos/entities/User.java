@@ -34,10 +34,9 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-//    @Column(name = "userid")
-//    private Integer userId;
+
     @Basic(optional = false)
-    @Column(name = "username")
+    @Column(name = "username" , unique = true) //making username unique
     private String username;
     @Basic(optional = false)
     @Column(name = "password")
