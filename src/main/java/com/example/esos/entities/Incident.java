@@ -34,7 +34,7 @@ public class Incident implements Serializable {
     @Column(name = "id")
     private Integer id;
     @Basic(optional = false)
-    @Column(name = "incidentid")
+    @Column(name = "incidentid" , unique = true)
     private String incidentID;
     @Column(name = "description")
     private String description;

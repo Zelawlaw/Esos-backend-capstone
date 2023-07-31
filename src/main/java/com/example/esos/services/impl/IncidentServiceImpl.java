@@ -14,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -27,6 +30,7 @@ public class IncidentServiceImpl implements IncidentService {
 
     private final IncidentRepository incidentRepository;
     private final UserRepository userRepository;
+
 
     @Override
     public ResponseEntity<IncidentResponse> getIncidents(String username) {
@@ -73,9 +77,12 @@ public class IncidentServiceImpl implements IncidentService {
     @Override
     public ResponseEntity<GenericResponse> createIncident(IncidentCreate incidentCreate) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
         Incident reportedIncident = Incident.builder()
                 .incidentID("ESOS" + String.format("%03d", 0) + String.format("%04d", (int) (Math.random() * 10000))) //requires a proper method
-                .reporter("lolo")  //later get it from logged in user
+                .reporter(username)  //getting it from logged in user
                 .description(incidentCreate.getMessage())
                 .status("active")
                 .reportedtime(new Date())

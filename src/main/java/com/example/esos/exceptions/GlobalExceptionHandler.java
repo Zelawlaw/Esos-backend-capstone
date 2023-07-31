@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> allOtherExceptions(JwtException ex) {
+    public ResponseEntity<Object> allOtherExceptions(Exception ex) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error",ex.getMessage());
         return new ResponseEntity<>(errors, HttpStatus.INTERNAL_SERVER_ERROR);

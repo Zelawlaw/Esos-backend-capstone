@@ -28,7 +28,7 @@ public class UserPermission implements Serializable {
 
 
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
 
