@@ -34,9 +34,8 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @Column(name = "userid")
-    private Integer userId;
+//    @Column(name = "userid")
+//    private Integer userId;
     @Basic(optional = false)
     @Column(name = "username")
     private String username;
@@ -52,30 +51,30 @@ public class User implements Serializable {
 
     @JsonManagedReference
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserPermissions userPermissions;
+    private UserPermission userPermission;
 
-      public User (Integer userId,String username,String password){
-          this.userId = userId;
+      public User (String username,String password){
+
           this.username =  username;
           this.password = password;
       }
 
-    public User(Integer userId, String username, String password, PasswordEncoder passwordEncoder) {
-        this.userId = userId;
+    public User(String username, String password, PasswordEncoder passwordEncoder) {
+
         this.username = username;
         this.password = passwordEncoder.encode(password);
     }
+
 
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("User{");
         sb.append("id=").append(id);
-        sb.append(", userId=").append(userId);
         sb.append(", username='").append(username).append('\'');
         sb.append(", password='").append(password).append('\'');
         sb.append(", directReports size =").append(directReports.size());
         sb.append(", manager=").append(manager);
-        sb.append(", userPermissions=").append(userPermissions);
+        sb.append(", userPermission=").append(userPermission);
         sb.append('}');
         return sb.toString();
     }

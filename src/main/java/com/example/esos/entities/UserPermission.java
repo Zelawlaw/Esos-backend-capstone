@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserPermissions implements Serializable {
+public class UserPermission implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,12 +28,14 @@ public class UserPermissions implements Serializable {
 
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id")
     @JsonBackReference
     private User user;
 
-    public UserPermissions(Role role, User user) {
+    public UserPermission(Role role, User user) {
         this.role = role;
         this.user = user;
     }
+
+
 }

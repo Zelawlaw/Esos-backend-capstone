@@ -1,8 +1,12 @@
 package com.example.esos.services.impl;
 
-import com.example.esos.dto.LoginRequest;
+
+import com.example.esos.dto.SignupRequest;
 import com.example.esos.entities.User;
+import com.example.esos.entities.UserPermission;
+import com.example.esos.models.Role;
 import com.example.esos.models.responses.GenericResponse;
+import com.example.esos.repositories.UserPermissionRepository;
 import com.example.esos.repositories.UserRepository;
 import com.example.esos.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,15 +20,19 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserPermissionRepository userPermissionRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public ResponseEntity<GenericResponse> createUser(LoginRequest loginRequest) {
+    public ResponseEntity<GenericResponse> createUser(SignupRequest signupRequest) {
 
         try {
-            User newuser = new User(1, loginRequest.getUsername(), loginRequest.getPassword(), passwordEncoder);
-            this.userRepository.save(newuser);
+            User newuser = new User( signupRequest.getUsername(), signupRequest.getPassword(), passwordEncoder);
+            UserPermission userperm = new UserPermission(Role.valueOf(signupRequest.getRole()),newuser);
+            newuser.setUserPermission(userperm);
 
+            this.userRepository.save(newuser);
+            this.userPermissionRepository.save(userperm);
             return new ResponseEntity<>(GenericResponse.builder()
                     .message("success")
                     .status("200")

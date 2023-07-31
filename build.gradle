@@ -25,8 +25,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'org.springframework.security:spring-security-crypto'
-// https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
 	implementation 'javax.xml.bind:jaxb-api:2.3.0'
+	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 	implementation 'mysql:mysql-connector-java:8.0.27'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

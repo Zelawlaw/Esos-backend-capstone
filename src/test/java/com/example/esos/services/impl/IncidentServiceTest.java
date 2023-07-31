@@ -45,8 +45,8 @@ class IncidentServiceTest {
 
     @BeforeEach
     void setUp() {
-        user1 = new User(1000,"sample lolo","password1");
-        user2 = new User(2000,"sample ngururu","password2");
+        user1 = new User("sample lolo","password1");
+        user2 = new User("sample ngururu","password2");
         user1.setManager(user2);
         Collection<User> directreport = new ArrayList<>();
         directreport.add(user1);

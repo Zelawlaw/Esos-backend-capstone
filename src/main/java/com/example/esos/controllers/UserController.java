@@ -4,6 +4,7 @@ package com.example.esos.controllers;
 import com.example.esos.config.JwtTokenProvider;
 import com.example.esos.dto.AuthenticationResponse;
 import com.example.esos.dto.LoginRequest;
+import com.example.esos.dto.SignupRequest;
 import com.example.esos.services.UserService;
 import com.example.esos.services.impl.CustomUserDetailsService;
 import jakarta.validation.Valid;
@@ -28,7 +29,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/v1/createuser")
-    public ResponseEntity createUser (@Valid @RequestBody LoginRequest newuser) {
+    public ResponseEntity createUser (@Valid @RequestBody SignupRequest newuser) {
         try {
            return this.userService.createUser(newuser);
         } catch (BadCredentialsException ex) {
