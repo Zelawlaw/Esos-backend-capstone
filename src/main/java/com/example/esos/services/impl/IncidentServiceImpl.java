@@ -32,7 +32,7 @@ public class IncidentServiceImpl implements IncidentService {
     private final IncidentRepository incidentRepository;
     private final UserRepository userRepository;
 
-    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
     @Override
     public ResponseEntity<IncidentResponse> getIncidents(String username) {
         try {
@@ -74,7 +74,7 @@ public class IncidentServiceImpl implements IncidentService {
         }
     }
 
-    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
     @Override
     public ResponseEntity<GenericResponse> createIncident(IncidentCreate incidentCreate) {
 
@@ -105,7 +105,7 @@ public class IncidentServiceImpl implements IncidentService {
 
     }
 
-    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
     @Override
     public ResponseEntity<GenericResponse> updateIncident(IncidentUpdate incidentRequest) {
         AtomicReference<ResponseEntity<GenericResponse>> response = new AtomicReference<>();
@@ -136,6 +136,7 @@ public class IncidentServiceImpl implements IncidentService {
                                         .status("200")
                                         .build()));
                     } catch (Exception e) {
+                        log.error(e.getMessage());
                         response.set(ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
                                 .body(new GenericResponse("500", "Error updating incident")));
                     }

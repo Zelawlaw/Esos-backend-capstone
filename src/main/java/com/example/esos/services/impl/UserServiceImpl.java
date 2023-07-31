@@ -13,6 +13,7 @@ import com.example.esos.repositories.UserPermissionRepository;
 import com.example.esos.repositories.UserRepository;
 import com.example.esos.services.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -32,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public ResponseEntity<GenericResponse> createUser(SignupRequest signupRequest) {
 
@@ -65,11 +67,17 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
+    @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
     @Override
     public ResponseEntity getUsers() {
+        List <User> users = this.userRepository.findAll();
+          log.info("1");
+        for(User user :users){
+           log.info(user.toString());
+        }
 
-        List<UserResponse> allUsers = this.userRepository.findAll().stream().map(
+
+        List<UserResponse> allUsers = users.stream().map(
                 user -> this.userMapper.userToUserResponse(user)
         ).collect(Collectors.toList());
 

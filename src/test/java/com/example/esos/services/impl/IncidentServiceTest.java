@@ -145,6 +145,7 @@ class IncidentServiceTest {
 
 
     @Test
+    @WithMockUser(username = "testuser", roles = {"ADMIN"})
     void testSuccessfulGetIncidents() {
         //save users
         List<User> users = new ArrayList<>();
