@@ -41,6 +41,8 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "password")
     private String password;
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "manager")
     private Collection<User> directReports;
     @JoinColumn(name = "managerid", referencedColumnName = "id")

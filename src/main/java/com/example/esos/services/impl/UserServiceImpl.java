@@ -67,14 +67,15 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    @PreAuthorize("hasRole('ADMIN') || hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Override
     public ResponseEntity getUsers() {
         List <User> users = this.userRepository.findAll();
-          log.info("1");
-        for(User user :users){
-           log.info(user.toString());
-        }
+          log.info("AT LEAST NAFIKA HAPA");
+        log.info("users size :"+users.size());
+//        for(User user :users){
+//           log.info(user.toString());
+//        }
 
 
         List<UserResponse> allUsers = users.stream().map(

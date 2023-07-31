@@ -10,6 +10,5 @@ import java.util.List;
 public interface UserMapper {
 
     UserResponse userToUserResponse(User user);
-
-    List<UserResponse> usersToUserResponses(List<User> users);
+    User userResponseToUser(UserResponse userResponse);
 }
