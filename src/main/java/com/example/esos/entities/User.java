@@ -65,6 +65,12 @@ public class User implements Serializable {
         this.password = passwordEncoder.encode(password);
     }
 
+    public User(String username, String password, User manager, PasswordEncoder passwordEncoder) {
+        this.username = username;
+        this.password = passwordEncoder.encode(password);
+        this.manager = manager;
+    }
+
 
     @Override
     public String toString() {

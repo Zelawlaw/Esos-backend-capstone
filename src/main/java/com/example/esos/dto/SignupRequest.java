@@ -3,6 +3,7 @@ package com.example.esos.dto;
 
 import com.example.esos.validation.ValidRole;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -26,6 +27,7 @@ public class SignupRequest {
     @ValidRole
     private String role;
 
-
+    @Min(value = 1, message = "Manager ID should be a number")
+    private Integer managerId;
 
 }
