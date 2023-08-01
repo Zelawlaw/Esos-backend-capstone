@@ -1,7 +1,9 @@
 package com.example.esos.config;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import io.jsonwebtoken.Claims;
@@ -12,12 +14,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenProvider {
-
-    private static final String SECRET = "yourSecretKey";
     private static final long EXPIRATION_TIME = 60 * 60 * 1000; // 1 hour in milliseconds
+    @Value("${token.secret:simplesecret}")
+    private String SECRET;
+
 
 
     private final UserDetailsService userDetailsService;
@@ -29,9 +34,13 @@ public class JwtTokenProvider {
     public String createToken(UserDetails userDetails) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
 
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
+                .claim("roles", roles)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, SECRET)
