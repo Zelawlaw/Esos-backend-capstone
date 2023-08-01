@@ -68,7 +68,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authenticationProvider(daoAuthenticationProvider());
-
+        http.cors( cors-> cors.configurationSource(corsConfigurationSource()));
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/v1/authenticate").permitAll()
