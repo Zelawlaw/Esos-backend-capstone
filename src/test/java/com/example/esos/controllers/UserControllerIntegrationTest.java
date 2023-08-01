@@ -34,30 +34,30 @@ public class UserControllerIntegrationTest {
     @MockBean
     private UserRepository userRepository;
 
-//    @Test
-//    @WithMockUser(username = "testuser", roles = {"USER"})
-//    public void shouldFetchUsers() throws Exception {
-//        User user1 = new User("lolo1", "asdlkfjlkasjdf", passwordEncoder);
-//        user1.setId(1);
-//        user1.setDirectReports(new ArrayList<>());
-//        User user2 = new User("lolo2", "asdflasjfl", passwordEncoder);
-//        user2.setId(2);
-//        user1.setDirectReports(new ArrayList<>());
-//        UserResponse userResponse1 = new UserResponse(1, "lolo1");
-//        UserResponse userResponse2 = new UserResponse(2, "lolo2");
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        String expectedJson = mapper.writeValueAsString(Arrays.asList(userResponse1, userResponse2));
-//        //when
-//        List<User> userlist = new ArrayList<>();
-//        userlist.add(user1);
-//        userlist.add(user2);
-//        doReturn(userlist).when(userRepository).findAll();
-//
-//        //do
-//        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/getusers")
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-//                .andExpect(content().json(expectedJson));
-//    }
+    @Test
+    @WithMockUser(username = "testuser", roles = {"ADMIN"})
+    public void shouldFetchUsers() throws Exception {
+        User user1 = new User("lolo1", "asdlkfjlkasjdf", passwordEncoder);
+        user1.setId(1);
+        user1.setDirectReports(new ArrayList<>());
+        User user2 = new User("lolo2", "asdflasjfl", passwordEncoder);
+        user2.setId(2);
+        user1.setDirectReports(new ArrayList<>());
+        UserResponse userResponse1 = new UserResponse(1, "lolo1");
+        UserResponse userResponse2 = new UserResponse(2, "lolo2");
+
+        ObjectMapper mapper = new ObjectMapper();
+        String expectedJson = mapper.writeValueAsString(Arrays.asList(userResponse1, userResponse2));
+        //when
+        List<User> userlist = new ArrayList<>();
+        userlist.add(user1);
+        userlist.add(user2);
+        doReturn(userlist).when(userRepository).findAll();
+
+        //do
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/getusers")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedJson));
+    }
 }
