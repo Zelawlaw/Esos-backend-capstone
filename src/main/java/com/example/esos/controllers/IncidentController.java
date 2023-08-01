@@ -31,8 +31,17 @@ public class IncidentController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         log.info("username {}", username);
+        return this.incidentService.getIncidentSummary(username);
+    }
+
+    @GetMapping("/v1/getincidentsummary")
+    public ResponseEntity getIncidentSummary() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        log.info("username {}", username);
         return this.incidentService.getIncidents(username);
     }
+
 
 
     @PostMapping("/v1/createincident")
