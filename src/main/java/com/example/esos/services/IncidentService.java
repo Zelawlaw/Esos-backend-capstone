@@ -1,5 +1,6 @@
 package com.example.esos.services;
 
+import com.example.esos.dto.IncidentSummary;
 import com.example.esos.models.requests.IncidentCreate;
 import com.example.esos.models.requests.IncidentUpdate;
 import com.example.esos.models.responses.GenericResponse;
@@ -23,4 +24,5 @@ public interface IncidentService {
     ResponseEntity<GenericResponse> updateIncident(IncidentUpdate incidentRequest);
 
 
+    ResponseEntity<IncidentSummary> getIncidentSummary(String username);
 }

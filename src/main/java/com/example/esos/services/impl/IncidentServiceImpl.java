@@ -1,5 +1,6 @@
 package com.example.esos.services.impl;
 
+import com.example.esos.dto.IncidentSummary;
 import com.example.esos.entities.Incident;
 import com.example.esos.entities.Log;
 import com.example.esos.entities.User;
@@ -21,7 +22,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -48,7 +51,7 @@ public class IncidentServiceImpl implements IncidentService {
             fetchedUser.ifPresent(user -> {
                 // User is present
                 // Find all personal incidents
-                log.info("2");
+
                 incidentResponse.setPersonalIncidents(this.incidentRepository.findByReporter(user.getUsername()).orElse(Collections.emptyList()));
 
                 if (user.getDirectReports() != null) {
@@ -146,6 +149,55 @@ public class IncidentServiceImpl implements IncidentService {
                 });
 
         return response.get();
+    }
+
+    @Override
+    public ResponseEntity<IncidentSummary> getIncidentSummary(String username) {
+        try {
+
+            List<Incident> allIncidents = new ArrayList<>();
+            List<Incident> directReportsIncidents = new ArrayList<>();
+
+            // Create an empty incident response
+            IncidentResponse incidentResponse = new IncidentResponse();
+            // Fetch user from username
+            Optional<User> fetchedUser = this.userRepository.findUserByUsername(username);
+
+            fetchedUser.ifPresent(user -> {
+                // User is present
+                // Find all personal incidents
+
+                allIncidents.addAll(this.incidentRepository.findByReporter(user.getUsername()).orElse(Collections.emptyList()));
+
+                if (user.getDirectReports() != null) {
+                    for (User directReport : user.getDirectReports()) {
+                        this.incidentRepository.findByReporter(directReport.getUsername())
+                                .ifPresent(allIncidents::addAll);
+                    }
+                }
+            });
+
+            int all = allIncidents.size();
+            AtomicInteger active = new AtomicInteger();
+            AtomicInteger pending = new AtomicInteger();
+            AtomicInteger resolved = new AtomicInteger();
+
+            allIncidents.forEach(ticket -> {
+                String status = ticket.getStatus().toLowerCase();
+                if ("active".equals(status)) {
+                    active.incrementAndGet();
+                } else if ("pending".equals(status)) {
+                    pending.incrementAndGet();
+                } else if ("resolved".equals(status)) {
+                    resolved.incrementAndGet();
+                }
+            });
+
+            return ResponseEntity.ok(new IncidentSummary(all,active.get(),pending.get(),resolved.get()));
+        } catch (Exception ex) {
+            System.out.println("Exception: " + ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }

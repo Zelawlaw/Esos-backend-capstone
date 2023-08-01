@@ -30,6 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -86,13 +87,16 @@ class IncidentControllerIntegrationTests {
         Incident mockIncident3 = new Incident("SOS23678", "gun at caffeteria unattendedn", new Date(),username);
         mockIncident3.setStatus("pending");
         Incident mockIncident4 = new Incident("SOS23679", "Unknown individual roaming around", new Date(),username);
-        mockIncident3.setStatus("resolved");
+        mockIncident4.setStatus("resolved");
         List<Incident> mockIncidents = Arrays.asList(mockIncident1,mockIncident2,mockIncident3,mockIncident4);
 
         IncidentSummary incidentSummary = IncidentSummary.builder()
                 .all(4)
                 .active(2)
-                .pending(1).build();
+                .pending(1)
+                .resolved(1)
+                .build();
+
         ObjectMapper mapper = new ObjectMapper();
         String expectedJson = mapper.writeValueAsString(incidentSummary);
         User testuser = new User("testUser","sfdlkjslakdfj",passwordEncoder);
@@ -103,9 +107,9 @@ class IncidentControllerIntegrationTests {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/getincidentsummary")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(expectedJson)
                         .with(user(username)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(content().json(expectedJson));
 
     }
 
