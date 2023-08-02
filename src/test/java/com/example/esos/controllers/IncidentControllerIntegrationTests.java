@@ -133,7 +133,7 @@ class IncidentControllerIntegrationTests {
     @Test
     @WithMockUser(username = "testuser", roles = {"ADMIN"})
     void testUpdateIncident() throws Exception {
-        IncidentUpdate incidentUpdate = new IncidentUpdate("getting better now","SOS23677");
+        IncidentUpdate incidentUpdate = new IncidentUpdate("getting better now","SOS23677","pending");
         Incident mockIncident = new Incident("SOS23677", "severe headache", new Date(),"testUser");
         mockIncident.setLogsCollection(new ArrayList<>());
         Incident mockreturnedIncident = new Incident("SOS23677", "severe headache", new Date(),"testUser");

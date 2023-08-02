@@ -18,4 +18,12 @@ public class IncidentUpdate {
     @NotEmpty(message = "incidentId should not be empty")
     @NotNull(message = "incidentId should not be null")
     String incidentId;
+
+    String status;
+
+   public IncidentUpdate( String update,String incidentId)
+    {
+        this.incidentId = incidentId;
+        this.update = update;
+    }
 }

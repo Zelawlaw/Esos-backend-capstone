@@ -11,6 +11,7 @@ import java.util.List;
 public interface UserMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "username", target = "username")
+    @Mapping(source = "userPermission.role", target = "role") // Mapping nested role
     UserResponse userToUserResponse(User user);
 
 }

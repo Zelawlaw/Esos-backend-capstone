@@ -2,6 +2,8 @@ package com.example.esos.controllers;
 
 import com.example.esos.dto.UserResponse;
 import com.example.esos.entities.User;
+import com.example.esos.entities.UserPermission;
+import com.example.esos.models.Role;
 import com.example.esos.repositories.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -39,12 +41,16 @@ public class UserControllerIntegrationTest {
     public void shouldFetchUsers() throws Exception {
         User user1 = new User("lolo1", "asdlkfjlkasjdf", passwordEncoder);
         user1.setId(1);
+        UserPermission up1 = new UserPermission(1, Role.USER,user1);
+        user1.setUserPermission(up1);
         user1.setDirectReports(new ArrayList<>());
         User user2 = new User("lolo2", "asdflasjfl", passwordEncoder);
         user2.setId(2);
+        UserPermission up2 = new UserPermission(1, Role.ADMIN,user2);
+        user2.setUserPermission(up2);
         user1.setDirectReports(new ArrayList<>());
-        UserResponse userResponse1 = new UserResponse(1, "lolo1");
-        UserResponse userResponse2 = new UserResponse(2, "lolo2");
+        UserResponse userResponse1 = new UserResponse(1, "lolo1","USER");
+        UserResponse userResponse2 = new UserResponse(2, "lolo2","ADMIN");
 
         ObjectMapper mapper = new ObjectMapper();
         String expectedJson = mapper.writeValueAsString(Arrays.asList(userResponse1, userResponse2));

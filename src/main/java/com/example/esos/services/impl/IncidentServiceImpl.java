@@ -131,6 +131,15 @@ public class IncidentServiceImpl implements IncidentService {
                         logs.add(newLog);
                         incident.setLogsCollection(logs);
 
+                       ;
+                    log.info("incidentRequest.getStatus() :{},incident.getStatus():{}",incidentRequest.getStatus(),incident.getStatus());
+                     //check if incidentRequest has status and if status is different from current.
+                    if(incidentRequest.getStatus()!= null  && incident.getStatus() != "resolved"
+                      && incidentRequest.getStatus() != incident.getStatus())
+                    {
+                        log.info("I am here?");
+                     incident.setStatus(incidentRequest.getStatus());
+                    }
                         // Save updated incident with logs
                         this.incidentRepository.save(incident);
                         response.set(ResponseEntity.ok()
@@ -156,10 +165,7 @@ public class IncidentServiceImpl implements IncidentService {
         try {
 
             List<Incident> allIncidents = new ArrayList<>();
-            List<Incident> directReportsIncidents = new ArrayList<>();
 
-            // Create an empty incident response
-            IncidentResponse incidentResponse = new IncidentResponse();
             // Fetch user from username
             Optional<User> fetchedUser = this.userRepository.findUserByUsername(username);
 
