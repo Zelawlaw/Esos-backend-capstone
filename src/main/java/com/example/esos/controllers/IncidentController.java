@@ -46,7 +46,6 @@ public class IncidentController {
 
     @PostMapping("/v1/createincident")
     public ResponseEntity createIncident(@Valid @RequestBody IncidentCreate incidentCreate, BindingResult bindingResult) {
-
         if (bindingResult.hasErrors()) {
             Map<String, String> errors = new HashMap<>();
             bindingResult.getAllErrors().forEach(error -> {
