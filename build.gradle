@@ -20,7 +20,7 @@ repositories {
 
 bootJar {
     archiveFileName = "esos-0.0.1-SNAPSHOT.jar"
-    mainClassName = 'com.example.esos.EsosApplication'
+    mainClass = 'com.example.esos.EsosApplication'  // Replace with the fully qualified name of your main class
 }
 
 
